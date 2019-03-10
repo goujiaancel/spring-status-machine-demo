@@ -1,6 +1,7 @@
 package com.ht.springstatusmachinedemo.web;
 
 import com.google.gson.Gson;
+import com.ht.springstatusmachinedemo.configure.StateMachineManager;
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
 import com.ht.springstatusmachinedemo.util.SpringUtil;
@@ -13,8 +14,6 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
-import java.util.Collection;
 
 /**
  * @author goujia
@@ -25,7 +24,8 @@ import java.util.Collection;
 public class StateMachineController {
     private final Gson gson = new Gson();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    @Autowired
+    private StateMachineManager stateMachineManager;
     @Autowired
     private StateMachinePersister persist;
 
@@ -34,7 +34,7 @@ public class StateMachineController {
         TestVO testVO = gson.fromJson(requestBody, TestVO.class);
         String id = testVO.getId();
         Events events = testVO.getEvents();
-        StateMachine<States, Events> stateMachine = SpringUtil.getBean("stateMachine", StateMachine.class);
+        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
         logger.info("statusMach ine start...uuid : {}", stateMachine.getUuid());
         stateMachine.start();
         stateMachine.sendEvent(events);
@@ -48,7 +48,7 @@ public class StateMachineController {
     public void getMachineState(@RequestBody String requestBody, HttpServletRequest request) throws Exception {
         TestVO testVO = gson.fromJson(requestBody, TestVO.class);
         String id = testVO.getId();
-        StateMachine<States, Events> stateMachine = SpringUtil.getBean("stateMachine", StateMachine.class);
+        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
         stateMachine = persist.restore(stateMachine, id);
         logger.info("getMachineState : {}", stateMachine.getState().getId());
     }
