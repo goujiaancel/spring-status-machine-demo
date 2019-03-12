@@ -1,8 +1,10 @@
 package com.ht.springstatusmachinedemo;
 
 import com.ht.springstatusmachinedemo.configure.StateMachineManager;
+import com.ht.springstatusmachinedemo.entity.Order;
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
+import com.ht.springstatusmachinedemo.service.OrderService;
 import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +14,14 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.UUID;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Log
 public class SpringStatusMachineDemoApplicationTests {
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	StateMachineManager stateMachineManager;
 	@Autowired
@@ -53,6 +59,14 @@ public class SpringStatusMachineDemoApplicationTests {
 		persister.restore(stateMachine, "1234567890");
 		//当前状态机信息
 		log.info("stateMachine current state is :" + stateMachine.getState().getId().name());
+	}
+
+	@Test
+	public void testService() throws Exception {
+		String id = UUID.randomUUID().toString();
+		log.info("id : "+ id);
+		Order order = new Order(id, Events.PAY);
+		this.orderService.createOrder(order);
 	}
 
 }
