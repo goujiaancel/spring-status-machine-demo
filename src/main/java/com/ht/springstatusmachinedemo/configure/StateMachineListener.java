@@ -1,8 +1,6 @@
 package com.ht.springstatusmachinedemo.configure;
 
 import lombok.extern.java.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.annotation.OnTransition;
 import org.springframework.statemachine.annotation.WithStateMachine;
 
@@ -10,6 +8,7 @@ import org.springframework.statemachine.annotation.WithStateMachine;
 /**
  * @author goujia
  * @version Id: StateMachineListener.java, v 0.1 2019/3/8 16:48 goujia Exp $
+ * extends StateMachineListenerAdapter
  */
 @Log
 @WithStateMachine(name = "stateMachine")

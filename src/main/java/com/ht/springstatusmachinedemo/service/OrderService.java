@@ -10,8 +10,6 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.stereotype.Service;
 
-import javax.print.DocFlavor;
-
 /**
  * @author goujia
  * @version Id: OrderService.java, v 0.1 2019/3/12 11:21 goujia Exp $

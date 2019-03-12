@@ -1,28 +1,21 @@
 package com.ht.springstatusmachinedemo.configure;
 
+import com.ht.springstatusmachinedemo.configure.action.OrderAction;
+import com.ht.springstatusmachinedemo.configure.guard.OrderGuard;
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
-import com.sun.prism.shader.Solid_TextureRGB_AlphaTest_Loader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.annotation.Bean;
+import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.data.annotation.Id;
+import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachine;
-import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
-import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.guard.Guard;
-import org.springframework.statemachine.listener.StateMachineListener;
-import org.springframework.statemachine.listener.StateMachineListenerAdapter;
-import org.springframework.statemachine.transition.Transition;
-import org.springframework.stereotype.Component;
 
-import java.awt.*;
 import java.util.EnumSet;
 
 /**
@@ -32,7 +25,12 @@ import java.util.EnumSet;
 
 @EnableStateMachine(name = "stateMachine")
 @Configuration
+@Log
 public class DemoStateMachine extends EnumStateMachineConfigurerAdapter<States,Events> {
+    @Autowired
+    private OrderGuard orderGuard;
+    @Autowired
+    private OrderAction orderAction;
     public static final String MACHINE_NAME = "stateMachine";
 
     /**
@@ -55,11 +53,22 @@ public class DemoStateMachine extends EnumStateMachineConfigurerAdapter<States,E
         transitions.withExternal().
                 source(States.UNPAID).target(States.WAITING_FOR_RECEIVE).event(Events.PAY)
                 .and().withExternal()
-                .source(States.WAITING_FOR_RECEIVE).target(States.CLOSE).event(Events.CANCEL_ORDER)
+                .source(States.WAITING_FOR_RECEIVE)./*guard(new Guard<States, Events>() {
+            @Override
+            public boolean evaluate(StateContext<States, Events> stateContext) {
+                StateMachine<States, Events> stateMachine = stateContext.getStateMachine();
+                log.info("stateMachine state is :" + stateMachine.getState().getId().name());
+                return true;
+            }
+        }).action(new Action<States, Events>() {
+            @Override
+            public void execute(StateContext<States, Events> stateContext) {
+                log.info("do action here ");
+
+            }
+        }).*/target(States.CLOSE).event(Events.CANCEL_ORDER)
                 .and().withExternal()
                 .source(States.WAITING_FOR_RECEIVE).target(States.DONE).event(Events.RECEIVE)
         ;
     }
-
-
 }
