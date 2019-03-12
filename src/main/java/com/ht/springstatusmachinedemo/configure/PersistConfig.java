@@ -23,11 +23,17 @@ public class PersistConfig {
     @Autowired
     private InMemoryStateMachinePersist inMemoryStateMachinePersist;
 
+    /**
+     * 内存持久化
+     */
     @Bean(name = "inMemoryPersister")
     public StateMachinePersister<States, Events, String> getPersister() {
         return new DefaultStateMachinePersister<>(inMemoryStateMachinePersist);
     }
 
+    /**
+     * redis持久化
+     */
     @Bean(name = "redisPersister")
     @Primary
     public RedisStateMachinePersister<States, Events> redisPersister() {
@@ -43,7 +49,7 @@ public class PersistConfig {
     public RedisConnectionFactory redisConnectionFactory(){
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig());
         jedisConnectionFactory.setDatabase(1);
-        jedisConnectionFactory.setHostName("localhost");
+        jedisConnectionFactory.setHostName("182.61.13.146");
         jedisConnectionFactory.setPort(6379);
         jedisConnectionFactory.setUsePool(true);
         return jedisConnectionFactory;
@@ -58,6 +64,5 @@ public class PersistConfig {
         jedisPoolConfig.setMaxTotal(60);
         return jedisPoolConfig;
     }
-
 
 }

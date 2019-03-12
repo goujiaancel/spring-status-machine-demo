@@ -1,24 +1,15 @@
 package com.ht.springstatusmachinedemo.vo;
 
 import com.ht.springstatusmachinedemo.enums.Events;
+import lombok.Getter;
+import lombok.Setter;
 
 public class TestVO {
+    @Getter
+    @Setter
     private String id;
+    @Getter
+    @Setter
     private Events events;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Events getEvents() {
-        return events;
-    }
-
-    public void setEvents(Events events) {
-        this.events = events;
-    }
 }

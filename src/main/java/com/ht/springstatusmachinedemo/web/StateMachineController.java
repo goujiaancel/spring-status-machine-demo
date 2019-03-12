@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.ht.springstatusmachinedemo.configure.StateMachineManager;
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
-import com.ht.springstatusmachinedemo.util.SpringUtil;
 import com.ht.springstatusmachinedemo.vo.TestVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.persist.StateMachinePersister;
@@ -21,9 +19,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/machine")
+@Log
 public class StateMachineController {
     private final Gson gson = new Gson();
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private StateMachineManager stateMachineManager;
     @Autowired
@@ -31,15 +29,15 @@ public class StateMachineController {
 
     @PostMapping("/start")
     public void doPay(@RequestBody String requestBody, HttpServletRequest request) throws Exception {
+        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
         TestVO testVO = gson.fromJson(requestBody, TestVO.class);
         String id = testVO.getId();
         Events events = testVO.getEvents();
-        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
-        logger.info("statusMach ine start...uuid : {}", stateMachine.getUuid());
+        log.info("statusMachine start...uuid is "+ stateMachine.getUuid());
         stateMachine.start();
         stateMachine.sendEvent(events);
         persist.persist(stateMachine, id);
-        logger.info("machineState : {}", stateMachine.getState().getId());
+        log.info("machineState is "+ stateMachine.getState().getId().name());
         //stateMachine.sendEvent(Events.CANCEL_ORDER);
         //stateMachine.sendEvent(Events.RECEIVE);
     }
@@ -50,7 +48,7 @@ public class StateMachineController {
         String id = testVO.getId();
         StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
         stateMachine = persist.restore(stateMachine, id);
-        logger.info("getMachineState : {}", stateMachine.getState().getId());
+        log.info("getMachineState restore id is "+stateMachine.getState().getId());
     }
 
 }

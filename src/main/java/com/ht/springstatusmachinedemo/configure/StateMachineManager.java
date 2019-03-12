@@ -19,6 +19,7 @@ public class StateMachineManager implements InitializingBean, ApplicationContext
     private StateMachine<States, Events> stateMachine;
 
 
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -26,7 +27,7 @@ public class StateMachineManager implements InitializingBean, ApplicationContext
 
     @Override
     public void afterPropertiesSet() {
-        stateMachine = applicationContext.getBean("stateMachine", StateMachine.class);
+        stateMachine = applicationContext.getBean(DemoStateMachine.MACHINE_NAME, StateMachine.class);
     }
 
     public StateMachine<States, Events> getStateMachine() {
