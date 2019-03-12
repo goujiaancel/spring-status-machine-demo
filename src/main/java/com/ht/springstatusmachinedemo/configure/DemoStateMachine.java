@@ -51,22 +51,9 @@ public class DemoStateMachine extends EnumStateMachineConfigurerAdapter<States,E
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
         transitions.withExternal().
-                source(States.UNPAID).target(States.WAITING_FOR_RECEIVE).event(Events.PAY)
+                source(States.UNPAID).guard(orderGuard).target(States.WAITING_FOR_RECEIVE).action(orderAction).event(Events.PAY)
                 .and().withExternal()
-                .source(States.WAITING_FOR_RECEIVE)./*guard(new Guard<States, Events>() {
-            @Override
-            public boolean evaluate(StateContext<States, Events> stateContext) {
-                StateMachine<States, Events> stateMachine = stateContext.getStateMachine();
-                log.info("stateMachine state is :" + stateMachine.getState().getId().name());
-                return true;
-            }
-        }).action(new Action<States, Events>() {
-            @Override
-            public void execute(StateContext<States, Events> stateContext) {
-                log.info("do action here ");
-
-            }
-        }).*/target(States.CLOSE).event(Events.CANCEL_ORDER)
+                .source(States.WAITING_FOR_RECEIVE).target(States.CLOSE).event(Events.CANCEL_ORDER)
                 .and().withExternal()
                 .source(States.WAITING_FOR_RECEIVE).target(States.DONE).event(Events.RECEIVE)
         ;

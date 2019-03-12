@@ -63,10 +63,7 @@ public class SpringStatusMachineDemoApplicationTests {
 
 	@Test
 	public void testService() throws Exception {
-		String id = UUID.randomUUID().toString();
-		log.info("id : "+ id);
-		Order order = new Order(id, Events.PAY);
-		this.orderService.createOrder(order);
+		this.orderService.createOrder(12122121212121L);
 	}
 
 }

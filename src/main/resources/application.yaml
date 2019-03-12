@@ -1,0 +1,16 @@
+server:
+  port: 9999
+spring:
+  datasource:
+    url: jdbc:postgresql://182.61.13.146:5432/test?binaryTransfer=false
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+          hibernate:
+            temp:
+              use_jdbc_metadata_defaults: false
+    show-sql: true

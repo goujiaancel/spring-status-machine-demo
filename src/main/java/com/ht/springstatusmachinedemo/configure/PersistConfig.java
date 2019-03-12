@@ -2,7 +2,6 @@ package com.ht.springstatusmachinedemo.configure;
 
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
-import com.ht.springstatusmachinedemo.persist.InMemoryStateMachinePersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

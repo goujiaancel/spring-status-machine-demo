@@ -1,4 +1,4 @@
-package com.ht.springstatusmachinedemo.persist;
+package com.ht.springstatusmachinedemo.configure;
 
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
