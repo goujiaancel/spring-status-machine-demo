@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Log
-public class OrderGuard implements Guard<States,Events> {
+public class OrderGuard implements Guard<String,String> {
 
     @Override
-    public boolean evaluate(StateContext<States, Events> stateContext) {
+    public boolean evaluate(StateContext<String, String> stateContext) {
         log.info("doing guard now stateMachine uuid is "+stateContext.getStateMachine().getUuid().toString()+" , state is "+
-                                                                    stateContext.getStateMachine().getState().getId().name());
+                                                                    stateContext.getStateMachine().getState().getId());
         return true;
     }
 }

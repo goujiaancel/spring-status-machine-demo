@@ -66,4 +66,9 @@ public class SpringStatusMachineDemoApplicationTests {
 		this.orderService.createOrder(12122121212121L);
 	}
 
+	@Test
+	public void testServiceUpdateState(){
+		orderService.updateState(22L,Events.CANCEL_ORDER);
+	}
+
 }

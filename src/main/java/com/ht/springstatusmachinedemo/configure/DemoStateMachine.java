@@ -12,11 +12,14 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
+import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.guard.Guard;
 
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author goujia
@@ -26,7 +29,7 @@ import java.util.EnumSet;
 @EnableStateMachine(name = "stateMachine")
 @Configuration
 @Log
-public class DemoStateMachine extends EnumStateMachineConfigurerAdapter<States,Events> {
+public class DemoStateMachine extends StateMachineConfigurerAdapter<String,String> {
     @Autowired
     private OrderGuard orderGuard;
     @Autowired
@@ -39,8 +42,10 @@ public class DemoStateMachine extends EnumStateMachineConfigurerAdapter<States,E
      * @throws Exception
      */
     @Override
-    public void configure(StateMachineStateConfigurer<States, Events> status) throws Exception {
-        status.withStates().initial(States.UNPAID).end(States.DONE).end(States.CLOSE).states(EnumSet.allOf(States.class));
+    public void configure(StateMachineStateConfigurer<String, String> status) throws Exception {
+        Set<String> stringStates = new HashSet<>();
+        EnumSet.allOf(States.class).forEach(state -> stringStates.add(state.name()));
+        status.withStates().initial(States.UNPAID.name()).end(States.DONE.name()).end(States.CLOSE.name()).states(stringStates);
     }
 
     /**
@@ -49,13 +54,13 @@ public class DemoStateMachine extends EnumStateMachineConfigurerAdapter<States,E
      * @throws Exception
      */
     @Override
-    public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
+    public void configure(StateMachineTransitionConfigurer<String, String> transitions) throws Exception {
         transitions.withExternal().
-                source(States.UNPAID).guard(orderGuard).target(States.WAITING_FOR_RECEIVE).action(orderAction).event(Events.PAY)
+                source(States.UNPAID.name()).guard(orderGuard).target(States.WAITING_FOR_RECEIVE.name()).action(orderAction).event(Events.PAY.name())
                 .and().withExternal()
-                .source(States.WAITING_FOR_RECEIVE).target(States.CLOSE).event(Events.CANCEL_ORDER)
+                .source(States.WAITING_FOR_RECEIVE.name()).target(States.CLOSE.name()).event(Events.CANCEL_ORDER.name())
                 .and().withExternal()
-                .source(States.WAITING_FOR_RECEIVE).target(States.DONE).event(Events.RECEIVE)
+                .source(States.WAITING_FOR_RECEIVE.name()).target(States.DONE.name()).event(Events.RECEIVE.name())
         ;
     }
 }

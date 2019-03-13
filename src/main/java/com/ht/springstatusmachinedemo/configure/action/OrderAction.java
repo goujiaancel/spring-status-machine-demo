@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Log
-public class OrderAction implements Action<States,Events> {
+public class OrderAction implements Action<String,String> {
 
     @Override
-    public void execute(StateContext<States, Events> stateContext) {
-        StateMachine<States, Events> stateMachine = stateContext.getStateMachine();
-        log.info("doing action now stateMachine uuid is " + stateMachine.getUuid().toString() + " , state is " + stateMachine.getState().getId().name());
+    public void execute(StateContext<String, String> stateContext) {
+        StateMachine<String, String> stateMachine = stateContext.getStateMachine();
+        log.info("doing action now stateMachine uuid is " + stateMachine.getUuid().toString() + " , state is " + stateMachine.getState().getId());
 
     }
 }
