@@ -33,11 +33,11 @@ public class StateMachineController {
         TestVO testVO = gson.fromJson(requestBody, TestVO.class);
         String id = testVO.getId();
         Events events = testVO.getEvents();
-        log.info("statusMachine start...uuid is "+ stateMachine.getUuid());
+        log.info("statusMachine start...uuid is " + stateMachine.getUuid());
         stateMachine.start();
         stateMachine.sendEvent(events);
         persist.persist(stateMachine, id);
-        log.info("machineState is "+ stateMachine.getState().getId().name());
+        log.info("machineState is " + stateMachine.getState().getId().name());
         //stateMachine.sendEvent(Events.CANCEL_ORDER);
         //stateMachine.sendEvent(Events.RECEIVE);
     }
@@ -48,7 +48,7 @@ public class StateMachineController {
         String id = testVO.getId();
         StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
         stateMachine = persist.restore(stateMachine, id);
-        log.info("getMachineState restore id is "+stateMachine.getState().getId());
+        log.info("getMachineState restore id is " + stateMachine.getState().getId());
     }
 
 }

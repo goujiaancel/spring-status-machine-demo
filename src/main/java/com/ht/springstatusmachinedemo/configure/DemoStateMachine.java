@@ -7,16 +7,10 @@ import com.ht.springstatusmachinedemo.enums.States;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachine;
-import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
-import org.springframework.statemachine.guard.Guard;
-
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;

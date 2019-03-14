@@ -12,6 +12,8 @@ import org.springframework.statemachine.state.State;
 import org.springframework.statemachine.transition.Transition;
 import org.springframework.stereotype.Component;
 
+import static com.ht.springstatusmachinedemo.common.Constants.ORDER_HEADER;
+
 @Component
 @Log
 public class OrderPersistChangeListener implements PersistStateMachineHandler.PersistStateChangeListener {
@@ -28,8 +30,8 @@ public class OrderPersistChangeListener implements PersistStateMachineHandler.Pe
      */
     @Override
     public void onPersist(State<String, String> state, Message<String> message, Transition<String, String> transition, StateMachine<String, String> stateMachine) {
-        if (null != message && message.getHeaders().containsKey("order")) {
-            Order order = message.getHeaders().get("order", Order.class);
+        if (null != message && message.getHeaders().containsKey(ORDER_HEADER)) {
+            Order order = message.getHeaders().get(ORDER_HEADER, Order.class);
             order.setState(States.valueOf(state.getId()));
             log.info("order state is : " + order);
             orderRepository.save(order);

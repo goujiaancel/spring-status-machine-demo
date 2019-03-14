@@ -68,7 +68,7 @@ public class SpringStatusMachineDemoApplicationTests {
 
 	@Test
 	public void testServiceUpdateState(){
-		orderService.updateState(22L,Events.CANCEL_ORDER);
+		orderService.updateState(22L,Events.RECEIVE);
 	}
 
 }
