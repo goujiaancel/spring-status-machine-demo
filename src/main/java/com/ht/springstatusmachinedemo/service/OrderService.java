@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.swing.plaf.nimbus.State;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,15 @@ public class OrderService {
         stateMachine.sendEvent(Events.PAY);
         //this.orderRepository.save(order);
         persister.persist(stateMachine, id.toString());
+    }
+
+    public List<Order> findAll() {
+        Iterable<Order> iterable = orderRepository.findAll();
+        List<Order> orderList = new ArrayList<>();
+        iterable.forEach(single -> {
+            orderList.add(single);
+        });
+        return orderList;
     }
 
     public Order findOrderById(Long id) {

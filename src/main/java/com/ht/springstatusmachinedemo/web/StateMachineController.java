@@ -2,8 +2,10 @@ package com.ht.springstatusmachinedemo.web;
 
 import com.google.gson.Gson;
 import com.ht.springstatusmachinedemo.configure.StateMachineManager;
+import com.ht.springstatusmachinedemo.entity.Order;
 import com.ht.springstatusmachinedemo.enums.Events;
 import com.ht.springstatusmachinedemo.enums.States;
+import com.ht.springstatusmachinedemo.service.OrderService;
 import com.ht.springstatusmachinedemo.vo.TestVO;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author goujia
@@ -26,29 +29,17 @@ public class StateMachineController {
     private StateMachineManager stateMachineManager;
     @Autowired
     private StateMachinePersister persist;
+    @Autowired
+    private OrderService orderService;
 
-    @PostMapping("/start")
-    public void doPay(@RequestBody String requestBody, HttpServletRequest request) throws Exception {
-        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
-        TestVO testVO = gson.fromJson(requestBody, TestVO.class);
-        String id = testVO.getId();
-        Events events = testVO.getEvents();
-        log.info("statusMachine start...uuid is " + stateMachine.getUuid());
-        stateMachine.start();
-        stateMachine.sendEvent(events);
-        persist.persist(stateMachine, id);
-        log.info("machineState is " + stateMachine.getState().getId().name());
-        //stateMachine.sendEvent(Events.CANCEL_ORDER);
-        //stateMachine.sendEvent(Events.RECEIVE);
+    @GetMapping("/getAll")
+    public List<Order> getAll() throws Exception {
+        return orderService.findAll();
     }
 
-    @PostMapping("/getState")
-    public void getMachineState(@RequestBody String requestBody, HttpServletRequest request) throws Exception {
-        TestVO testVO = gson.fromJson(requestBody, TestVO.class);
-        String id = testVO.getId();
-        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
-        stateMachine = persist.restore(stateMachine, id);
-        log.info("getMachineState restore id is " + stateMachine.getState().getId());
+    @GetMapping("/order")
+    public Order getOrder(@RequestParam("id") Long id ) throws Exception {
+        return orderService.findOrderById(id);
     }
 
 }

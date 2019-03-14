@@ -68,7 +68,7 @@ public class SpringStatusMachineDemoApplicationTests {
 
 	@Test
 	public void testServiceUpdateState(){
-		orderService.updateState(22L,Events.RECEIVE);
+		orderService.updateState(66L,Events.PAY);
 	}
 
 }
