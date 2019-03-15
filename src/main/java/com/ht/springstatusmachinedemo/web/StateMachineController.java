@@ -1,19 +1,11 @@
 package com.ht.springstatusmachinedemo.web;
 
-import com.google.gson.Gson;
-import com.ht.springstatusmachinedemo.configure.StateMachineManager;
 import com.ht.springstatusmachinedemo.entity.Order;
-import com.ht.springstatusmachinedemo.enums.Events;
-import com.ht.springstatusmachinedemo.enums.States;
 import com.ht.springstatusmachinedemo.service.OrderService;
-import com.ht.springstatusmachinedemo.vo.TestVO;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
