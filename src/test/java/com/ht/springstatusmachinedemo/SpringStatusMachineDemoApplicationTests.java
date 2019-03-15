@@ -63,7 +63,7 @@ public class SpringStatusMachineDemoApplicationTests {
 
 	@Test
 	public void testService() throws Exception {
-		this.orderService.createOrder(12122121212121L);
+		this.orderService.createOrder();
 	}
 
 	@Test

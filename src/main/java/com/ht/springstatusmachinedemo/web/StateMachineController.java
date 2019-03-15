@@ -24,11 +24,6 @@ import java.util.List;
 @RequestMapping("/machine")
 @Log
 public class StateMachineController {
-    private final Gson gson = new Gson();
-    @Autowired
-    private StateMachineManager stateMachineManager;
-    @Autowired
-    private StateMachinePersister persist;
     @Autowired
     private OrderService orderService;
 

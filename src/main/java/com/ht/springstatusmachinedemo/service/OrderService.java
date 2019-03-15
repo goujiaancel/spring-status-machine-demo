@@ -42,13 +42,14 @@ public class OrderService {
     @Autowired
     private PersistStateMachineHandler persistStateMachineHandler;
 
-    public void createOrder(Long id) throws Exception {
+    public void createOrder() throws Exception {
+        orderRepository.save(new Order(null,States.UNPAID));
         //Order order = orderRepository.getOne(id);
-        StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
-        stateMachine.start();
-        stateMachine.sendEvent(Events.PAY);
+       // StateMachine<States, Events> stateMachine = stateMachineManager.getStateMachine();
+       // stateMachine.start();
+       // stateMachine.sendEvent(Events.PAY);
         //this.orderRepository.save(order);
-        persister.persist(stateMachine, id.toString());
+       // persister.persist(stateMachine, id.toString());
     }
 
     public List<Order> findAll() {
